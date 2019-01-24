@@ -50,8 +50,21 @@ class Weather extends Component {
 
     render() {
         const { city, current, forecast, weatherIcon } = this.state
+        let fiveDayForecast = {};
+        let count = 0;
 
-        console.log(city);
+        for (let i = 0; i < ( forecast.length - 8); i++) {
+            if (i === 0 || (i % 8 === 0) ){
+                var d = new Date(forecast[i]["dt_txt"]);
+                var dayName = d.toString().split(' ')[0];
+                fiveDayForecast[count] = {
+                    time: dayName,
+                    temp: Math.floor(forecast[i].main.temp),
+                }
+                count++;
+            }
+        }
+        console.log(fiveDayForecast);
 
         return <main className="weather">
             <div className="widget">
