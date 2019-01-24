@@ -7,7 +7,9 @@ class App extends Component {
 	render() {
 		return (
 			<div className="app">
-				<Header />
+				<header className="header">
+					<h3>Weather Widget</h3>
+				</header>
 
 				<Weather />
 			</div>
