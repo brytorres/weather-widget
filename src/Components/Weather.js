@@ -38,12 +38,12 @@ class Weather extends Component {
         const currentUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${appid}&units=${units}`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${appid}&units=${units}`;
         
-        const promises = [
+        const requests = [
             axios.get(currentUrl),
             axios.get(forecastUrl)
         ];
         
-        axios.all(promises)
+        axios.all(requests)
         .then(axios.spread((current, forecast) => {
             if (this.state.city !== current.data.name){
                 this.setState({
@@ -74,8 +74,8 @@ class Weather extends Component {
     render() {
         const { city, current, forecast, weatherIcon, error, errorState } = this.state
         let weatherForecast = {};
-        let count = 0;
         let errorMessage = '';
+        let count = 0;
 
         // Set error message
         error ? (errorMessage = `${error}. Please try again.`) : (errorMessage = "");

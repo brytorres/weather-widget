@@ -1,7 +1,7 @@
 /* Colors */
 $slate: rgba(80, 81, 79, 1);
 $honeydew: rgba(237, 255, 236, 1);
-$blu: rgba(36, 123, 160, 1);
+$blu: rgb(36, 123, 160);
 $sun: rgba(255, 166, 48, 1);
 
 /* App */
@@ -15,7 +15,7 @@ $sun: rgba(255, 166, 48, 1);
 
 		.nav__brand_title {
 			font-size: 24px;
-			color: $honeydew;
+			color: white;
 			text-transform: uppercase;
 			letter-spacing: 1px;
 		}
@@ -46,7 +46,7 @@ $sun: rgba(255, 166, 48, 1);
 					border-radius: 5px;
 					box-shadow: 0px 2px 1px rgba(0,0,0,0.1);
 					outline-width: 0;
-					border-style: solid;
+					border-style: none;
 					padding: 10px 7px 10px 15px;
 					font-size: 20px;	
 					letter-spacing: 8px;

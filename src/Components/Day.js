@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App.scss';
 
 class Day extends Component {
-
     render() {
         const { isToday, name, temp } = this.props;
         let dayName, day;
