@@ -76,16 +76,20 @@ class Weather extends Component {
         let count = 0;
         let errorMessage = '';
 
+        // Set error message
         error ? (errorMessage = `${error}. Please try again.`) : (errorMessage = "");
 
-        for (let i = 0; i < ( forecast.length - 8); i++) {
+        // Get weather data for each day and push to object
+        for (let i = 1; i < forecast.length; i++) {
             if (i === 0 || (i % 8 === 0) ){
                 var d = new Date(forecast[i]["dt_txt"]);
                 var dayName = d.toString().split(' ')[0];
+
                 weatherForecast[count] = {
                     day: dayName,
                     temp: Math.floor(forecast[i].main.temp),
                 }
+                
                 count++;
             }
         }
