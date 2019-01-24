@@ -10,18 +10,22 @@ class Weather extends Component {
         this.state = {
             zipCode: this.props.zip,
             city: [],
+            current: [],
+            weatherIcon: '',
             forecast: [],
             error: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.getCurrentWeather = this.getCurrentWeather.bind(this);
+        this.getWeatherForecast = this.getWeatherForecast.bind(this);
     }
 
-    handleChange(event) {
+    getCurrentWeather(url) {
+        return axios.get(url);
     }
 
-    handleSubmit(event) {
+    getWeatherForecast(url) {
+        return axios.get(url);
     }
 
     componentDidMount() {
@@ -29,49 +33,48 @@ class Weather extends Component {
         const zip = this.props.zip
         const appid = 'b08abc60f5222977c05dc54b137b2d17';
         const units = 'imperial';
-        const url = `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${appid}&units=${units}`;
+        const currentUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${appid}&units=${units}`;
+        const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${appid}&units=${units}`;
         
-        axios.get(url).then(response => {
+        axios.all([this.getCurrentWeather(currentUrl), this.getWeatherForecast(forecastUrl) ])
+        .then(axios.spread((current, forecast) => {
             this.setState({
-                city: response.data.city,
-                forecast: response.data.list
+                city: current.data.name,
+                weatherIcon: current.data.weather[0].icon,
+                current: Math.floor(current.data.main.temp),
+                forecast: forecast.data.list
             });
-        })
-        .catch(function (error) {
-            console.log(error);
-            this.setState({
-                error: error.message
-            });
-        });
+        }));
+
     }
 
     render() {
-        return (
-            <main className="weather">
+        const { city, current, forecast, weatherIcon } = this.state
 
-                <div className="widget">
-                    <div className="widget__input">
-                        <label htmlFor="zip">ZIP</label>
-                        <input type="text" name="zip"/>
-                    </div>
+        console.log(city);
 
-                    <div className="widget__data">
-                        <div className="data__city">
-                            <p className="city-name">Orlando</p>
+        return <main className="weather">
+            <div className="widget">
+              <div className="widget__input">
+                <label htmlFor="zip">ZIP</label>
+                <input type="text" name="zip" />
+              </div>
 
-                            {/* icon here */}
-                        </div>
+              <div className="widget__data">
+                <div className="data__city">
+                  <p className="city-name">{city}</p>
 
-                        <Day isToday={true}  name='Mon' temp='72' />
-                        <Day isToday={false} name='Tue' temp='68' />
-                        <Day isToday={false} name='Wed' temp='70' />
-                        <Day isToday={false} name='Thu' temp='71' />
-                        <Day isToday={false} name='Fri' temp='74' />
-                    </div>
+                  <img src={ `http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
                 </div>
 
-            </main>
-        );
+                <Day isToday={true} name="Today" temp={current} />
+                <Day isToday={false} name="Tue" temp="68" />
+                <Day isToday={false} name="Wed" temp="70" />
+                <Day isToday={false} name="Thu" temp="71" />
+                <Day isToday={false} name="Fri" temp="74" />
+              </div>
+            </div>
+          </main>;
     }
 }
 

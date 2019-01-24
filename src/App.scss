@@ -55,10 +55,12 @@ $sun: rgba(255, 166, 48, 1);
 				.data__city {
 					width: 140px;
 					padding: 10px;
-
+					
 					.city-name {
 						margin-top: 5px;
 						text-align: center;
+						text-transform: uppercase;
+						font-weight: bold;
 					}
 				}
 
