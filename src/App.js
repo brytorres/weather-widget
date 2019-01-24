@@ -10,7 +10,9 @@ class App extends Component {
 					<h3 className="nav__brand_title">Weather Widget</h3>
 				</nav>
 
-				<Weather zip="32801"/>
+				<main className="weather">
+					<Weather zip="32801"/>
+				</main>
 			</div>
 		);
 	}

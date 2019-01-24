@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Day from './Day';
+import City from './City';
 import '../App.scss';
 
 class Weather extends Component {
@@ -89,27 +90,21 @@ class Weather extends Component {
                     day: dayName,
                     temp: Math.floor(forecast[i].main.temp),
                 }
-                
+
                 count++;
             }
         }
 
         return (
-            <main className="weather">
-                <div className="widget">
+            <div className="widget">
 
-                    <div className="widget__input">
-                        <label htmlFor="zip">ZIP</label>
-                        <input type="text" placeholder={this.state.zipCode} value={this.state.value} onChange={this.handleZipInput} maxLength="5" />
-                    </div>
+                <div className="widget__input">
+                    <label htmlFor="zip">ZIP</label>
+                    <input type="text" placeholder={this.state.zipCode} value={this.state.value} onChange={this.handleZipInput} maxLength="5" />
+                </div>
 
-
-                    <div className="widget__data">
-                        <div className="data__city">
-                        <p className="city-name">{city}</p>
-
-                        <img className="city__icon" src={`http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
-                    </div>
+                <div className="widget__data">
+                    <City city={city} weatherIcon={weatherIcon} />
 
                     <Day isToday={true} name="Today" temp={current} />
 
@@ -120,15 +115,12 @@ class Weather extends Component {
                             key={forecast[1].day}
                         />
                     ))}
-
                 </div>
-                
+
                 <div className="widget__error-area">
                     <p className={`widget__error-message_${errorState}`}>{errorMessage}</p>
                 </div>
-
-                </div>
-            </main>
+            </div>
         );
     }
 }

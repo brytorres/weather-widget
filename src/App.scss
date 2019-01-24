@@ -1,11 +1,11 @@
-/* COLORS */
+/* Colors */
 $slate: rgba(80, 81, 79, 1);
 $honeydew: rgba(237, 255, 236, 1);
 $blu: rgba(36, 123, 160, 1);
 $sun: rgba(255, 166, 48, 1);
 
+/* App */
 .app {
-
 	.nav {
 		display: flex;
 		justify-content: center;
@@ -110,7 +110,7 @@ $sun: rgba(255, 166, 48, 1);
 		}
 
 		.widget__error-area {
-			height: 50px;
+			height: 20px;
 
 			.widget__error-message_show {
 				margin-top: 20px;
@@ -121,6 +121,10 @@ $sun: rgba(255, 166, 48, 1);
 				}
 			}
 			
+		}
+
+		.cred {
+			align-self: flex-end;
 		}
 	}
 }
