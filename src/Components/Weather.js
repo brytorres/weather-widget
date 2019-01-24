@@ -12,10 +12,11 @@ class Weather extends Component {
             zipCode: this.props.zip,
             city: [],
             current: [],
-            weatherIcon: '',
             forecast: [],
+            weatherIcon: '',
             error: '',
-            errorState: 'hide'
+            errorState: 'hide',
+            success: false
         };
 
         this.handleZipInput = this.handleZipInput.bind(this);
@@ -52,7 +53,8 @@ class Weather extends Component {
                     current: Math.floor(current.data.main.temp),
                     forecast: forecast.data.list,
                     error: '',
-                    errorState: 'hide'
+                    errorState: 'hide',
+                    success: true
                 });
             }
         }))
@@ -68,11 +70,11 @@ class Weather extends Component {
     }
 
     componentDidMount() {
-        this.getWeather();
+        if ( this.state.zipCode.length === 5 ) { this.getWeather(); } 
     }
 
     render() {
-        const { city, current, forecast, weatherIcon, error, errorState } = this.state
+        const { city, current, forecast, weatherIcon, error, errorState, success } = this.state
         let weatherForecast = {};
         let errorMessage = '';
         let count = 0;
@@ -103,19 +105,27 @@ class Weather extends Component {
                     <input type="text" placeholder={this.state.zipCode} value={this.state.value} onChange={this.handleZipInput} maxLength="5" />
                 </div>
 
-                <div className="widget__data">
-                    <City city={city} weatherIcon={weatherIcon} />
+                {success ?  (
+                    <div className="widget__data">
+                        <City city={city} weatherIcon={weatherIcon} />
 
-                    <Day isToday={true} name="Today" temp={current} />
+                        <Day isToday={true} name="Today" temp={current} />
 
-                    {Object.entries(weatherForecast).map(forecast => (
-                        <Day isToday={false}
-                            name={forecast[1].day}
-                            temp={forecast[1].temp}
-                            key={forecast[1].day}
-                        />
-                    ))}
-                </div>
+                        {Object.entries(weatherForecast).map(forecast => (
+                            <Day isToday={false}
+                                name={forecast[1].day}
+                                temp={forecast[1].temp}
+                                key={forecast[1].day}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div>
+                        <h3>There was an issue retrieving weather data.</h3>
+                        <h3>Please check the ZIP code and try again.</h3>
+                    </div>
+                )}
+
 
                 <div className="widget__error-area">
                     <p className={`widget__error-message_${errorState}`}>{errorMessage}</p>
