@@ -55,6 +55,8 @@ $sun: rgba(255, 166, 48, 1);
 				.data__city {
 					width: 140px;
 					padding: 10px;
+					display: flex;
+					flex-direction: column;
 					
 					.city-name {
 						margin-top: 5px;
@@ -62,9 +64,16 @@ $sun: rgba(255, 166, 48, 1);
 						text-transform: uppercase;
 						font-weight: bold;
 					}
+
+					.city__icon {
+						align-self: center;
+
+					}
 				}
 
 				@mixin day-info($bg: white, $name-col: #222, $temp-col: $blu ) {
+					width: 80px;
+					text-align: center;
 					background: $bg;
 					
 					.day__name {
@@ -82,14 +91,10 @@ $sun: rgba(255, 166, 48, 1);
 				}
 
 				.data__today {
-					width: 100px;
-					text-align: center;
 					@include day-info(darken( white, 3% ), #222, $blu)
 				}
 
 				.data__day {
-					width: 100px;
-					text-align: center;
 					@include day-info(white, rgb(168, 168, 168), $slate)
 				}
 			}

@@ -29,7 +29,6 @@ class Weather extends Component {
     }
 
     componentDidMount() {
-
         const zip = this.props.zip
         const appid = 'b08abc60f5222977c05dc54b137b2d17';
         const units = 'imperial';
@@ -38,6 +37,7 @@ class Weather extends Component {
         
         axios.all([this.getCurrentWeather(currentUrl), this.getWeatherForecast(forecastUrl) ])
         .then(axios.spread((current, forecast) => {
+            console.log(current)
             this.setState({
                 city: current.data.name,
                 weatherIcon: current.data.weather[0].icon,
@@ -45,26 +45,25 @@ class Weather extends Component {
                 forecast: forecast.data.list
             });
         }));
-
     }
 
     render() {
         const { city, current, forecast, weatherIcon } = this.state
-        let fiveDayForecast = {};
+        let weatherForecast = {};
         let count = 0;
 
         for (let i = 0; i < ( forecast.length - 8); i++) {
             if (i === 0 || (i % 8 === 0) ){
                 var d = new Date(forecast[i]["dt_txt"]);
                 var dayName = d.toString().split(' ')[0];
-                fiveDayForecast[count] = {
-                    time: dayName,
+                weatherForecast[count] = {
+                    day: dayName,
                     temp: Math.floor(forecast[i].main.temp),
                 }
                 count++;
             }
         }
-        console.log(fiveDayForecast);
+        // console.log(weatherForecast);
 
         return <main className="weather">
             <div className="widget">
@@ -77,14 +76,18 @@ class Weather extends Component {
                 <div className="data__city">
                   <p className="city-name">{city}</p>
 
-                  <img src={ `http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
+                  <img className="city__icon" src={`http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
                 </div>
 
                 <Day isToday={true} name="Today" temp={current} />
-                <Day isToday={false} name="Tue" temp="68" />
-                <Day isToday={false} name="Wed" temp="70" />
-                <Day isToday={false} name="Thu" temp="71" />
-                <Day isToday={false} name="Fri" temp="74" />
+
+                {Object.entries(weatherForecast).map(forecast => (
+                    <Day isToday={false}
+                        name={forecast[1].day}
+                        temp={forecast[1].temp}
+                        key={forecast[1].day}
+                    />
+                ))}
               </div>
             </div>
           </main>;
