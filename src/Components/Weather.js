@@ -13,44 +13,70 @@ class Weather extends Component {
             current: [],
             weatherIcon: '',
             forecast: [],
-            error: ''
+            error: '',
+            errorState: 'hide'
         };
 
-        this.getCurrentWeather = this.getCurrentWeather.bind(this);
-        this.getWeatherForecast = this.getWeatherForecast.bind(this);
+        this.handleZipInput = this.handleZipInput.bind(this);
+        this.getWeather = this.getWeather.bind(this);
     }
 
-    getCurrentWeather(url) {
-        return axios.get(url);
+    // Handle ZIP code input
+    handleZipInput(event) {
+        this.setState({ zipCode: event.target.value }, () =>{
+            if ( this.state.zipCode.length === 5 ) { this.getWeather(); } 
+        });
     }
 
-    getWeatherForecast(url) {
-        return axios.get(url);
-    }
-
-    componentDidMount() {
-        const zip = this.props.zip
-        const appid = 'b08abc60f5222977c05dc54b137b2d17';
+    // Gets current states zipCode and fetches both current and forecasted weather data.
+    // That response data is then used to set state.
+    getWeather() {
+        const zip = this.state.zipCode
+        const appid = '94396816709a67bb9a7a501867dc94ba';
         const units = 'imperial';
         const currentUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${appid}&units=${units}`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${appid}&units=${units}`;
         
-        axios.all([this.getCurrentWeather(currentUrl), this.getWeatherForecast(forecastUrl) ])
+        const promises = [
+            axios.get(currentUrl),
+            axios.get(forecastUrl)
+        ];
+        
+        axios.all(promises)
         .then(axios.spread((current, forecast) => {
-            console.log(current)
-            this.setState({
-                city: current.data.name,
-                weatherIcon: current.data.weather[0].icon,
-                current: Math.floor(current.data.main.temp),
-                forecast: forecast.data.list
-            });
-        }));
+            if (this.state.city !== current.data.name){
+                this.setState({
+                    city: current.data.name,
+                    weatherIcon: current.data.weather[0].icon,
+                    current: Math.floor(current.data.main.temp),
+                    forecast: forecast.data.list,
+                    error: '',
+                    errorState: 'hide'
+                });
+            }
+        }))
+        .catch(error => {
+            if (error.response) {
+                console.log(error.response.data.message);
+                this.setState({
+                    error: error.response.data.message,
+                    errorState: 'show'
+                });
+            }
+        });   
+    }
+
+    componentDidMount() {
+        this.getWeather();
     }
 
     render() {
-        const { city, current, forecast, weatherIcon } = this.state
+        const { city, current, forecast, weatherIcon, error, errorState } = this.state
         let weatherForecast = {};
         let count = 0;
+        let errorMessage = '';
+
+        error ? (errorMessage = `${error}. Please try again.`) : (errorMessage = "");
 
         for (let i = 0; i < ( forecast.length - 8); i++) {
             if (i === 0 || (i % 8 === 0) ){
@@ -63,34 +89,43 @@ class Weather extends Component {
                 count++;
             }
         }
-        // console.log(weatherForecast);
 
-        return <main className="weather">
-            <div className="widget">
-              <div className="widget__input">
-                <label htmlFor="zip">ZIP</label>
-                <input type="text" name="zip" />
-              </div>
+        return (
+            <main className="weather">
+                <div className="widget">
 
-              <div className="widget__data">
-                <div className="data__city">
-                  <p className="city-name">{city}</p>
+                    <div className="widget__input">
+                        <label htmlFor="zip">ZIP</label>
+                        <input type="text" placeholder={this.state.zipCode} value={this.state.value} onChange={this.handleZipInput} maxLength="5" />
+                    </div>
 
-                  <img className="city__icon" src={`http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
+
+                    <div className="widget__data">
+                        <div className="data__city">
+                        <p className="city-name">{city}</p>
+
+                        <img className="city__icon" src={`http://openweathermap.org/img/w/${weatherIcon}.png`} alt="" />
+                    </div>
+
+                    <Day isToday={true} name="Today" temp={current} />
+
+                    {Object.entries(weatherForecast).map(forecast => (
+                        <Day isToday={false}
+                            name={forecast[1].day}
+                            temp={forecast[1].temp}
+                            key={forecast[1].day}
+                        />
+                    ))}
+
+                </div>
+                
+                <div className="widget__error-area">
+                    <p className={`widget__error-message_${errorState}`}>{errorMessage}</p>
                 </div>
 
-                <Day isToday={true} name="Today" temp={current} />
-
-                {Object.entries(weatherForecast).map(forecast => (
-                    <Day isToday={false}
-                        name={forecast[1].day}
-                        temp={forecast[1].temp}
-                        key={forecast[1].day}
-                    />
-                ))}
-              </div>
-            </div>
-          </main>;
+                </div>
+            </main>
+        );
     }
 }
 
