@@ -5,16 +5,17 @@ $blu: rgba(36, 123, 160, 1);
 $sun: rgba(255, 166, 48, 1);
 
 .app {
+
 	.nav {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 5vh;
-		background: $blu;
+		background: $slate;
 
 		.nav__brand_title {
 			font-size: 24px;
-			color: $sun;
+			color: $honeydew;
 			text-transform: uppercase;
 			letter-spacing: 1px;
 		}
@@ -34,7 +35,6 @@ $sun: rgba(255, 166, 48, 1);
 				flex-direction: row;
 				align-items: center;
 				
-
 				label {
 					margin-right: 10px;
 					font-weight: bold;
@@ -57,8 +57,9 @@ $sun: rgba(255, 166, 48, 1);
 				display: flex;
 				flex-direction: row;
 				background: white;
-				box-shadow: 0px 15px 25px rgba(0,0,0,0.2);
-				margin-top: 40px;
+				box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+				border-radius: 10px;
+				margin-top: 35px;
 
 				.data__city {
 					width: 140px;
@@ -103,7 +104,7 @@ $sun: rgba(255, 166, 48, 1);
 				}
 
 				.data__day {
-					@include day-info(white, rgb(168, 168, 168), $slate)
+					@include day-info(none, rgb(168, 168, 168), $slate)
 				}
 			}
 		}
