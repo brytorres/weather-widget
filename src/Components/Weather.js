@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import Day from './Day';
+import Day from './Day';
 import '../App.scss';
 
 class Weather extends Component {
@@ -62,30 +62,11 @@ class Weather extends Component {
                             {/* icon here */}
                         </div>
 
-                        <div className="data__today">
-                            <p className="day__name">Today</p>
-                            <p className="day__temp">70</p>
-                        </div>
-
-                        <div className="data__day">
-                            <p className="day__name">Thu</p>
-                            <p className="day__temp">70</p>
-                        </div>
-
-                        <div className="data__day">
-                            <p className="day__name">Fri</p>
-                            <p className="day__temp">70</p>
-                        </div>
-
-                        <div className="data__day">
-                            <p className="day__name">Sat</p>
-                            <p className="day__temp">70</p>
-                        </div>
-
-                        <div className="data__day">
-                            <p className="day__name">Sun</p>
-                            <p className="day__temp">70</p>
-                        </div>
+                        <Day isToday={true}  name='Mon' temp='72' />
+                        <Day isToday={false} name='Tue' temp='68' />
+                        <Day isToday={false} name='Wed' temp='70' />
+                        <Day isToday={false} name='Thu' temp='71' />
+                        <Day isToday={false} name='Fri' temp='74' />
                     </div>
                 </div>
 
