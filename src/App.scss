@@ -6,6 +6,24 @@ $blu: rgba(36, 123, 160, 1);
 $sun: rgba(255, 166, 48, 1);
 
 .app {
-	
+	.nav {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 5vh;
+		background: $blu;
+
+		.nav__brand_title {
+			font-size: 24px;
+			color: $honeydew;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+	}
+
+	.weather {
+		height: 95vh;
+		background: $white;
+	}
 }
 
