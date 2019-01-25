@@ -12,7 +12,7 @@ class App extends Component {
 				</nav>
 
 				<main className="weather">
-					<Weather zip="32801"/>
+					<Weather zip="32801" />
 				</main>
 				
 			</div>
