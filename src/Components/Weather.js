@@ -31,7 +31,7 @@ class Weather extends Component {
     }
 
     // Gets current states zipCode and fetches both current and forecasted weather data.
-    // That response data is then used to set state.
+    // That responses data is then used to set state.
     getWeather() {
         const zip = this.state.zipCode
         const appid = '94396816709a67bb9a7a501867dc94ba';
@@ -83,7 +83,7 @@ class Weather extends Component {
         error ? (errorMessage = `${error}. Please try again.`) : (errorMessage = "");
 
         // Get weather data for each day and push to object
-        for (let i = 1; i < forecast.length; i++) {
+        for (let i = 0; i < ( forecast.length - 8 ); i++) {
             if (i === 0 || (i % 8 === 0) ){
                 var d = new Date(forecast[i]["dt_txt"]);
                 var dayName = d.toString().split(' ')[0];
@@ -125,7 +125,6 @@ class Weather extends Component {
                         <h3>Please check the ZIP code and try again.</h3>
                     </div>
                 )}
-
 
                 <div className="widget__error-area">
                     <p className={`widget__error-message_${errorState}`}>{errorMessage}</p>

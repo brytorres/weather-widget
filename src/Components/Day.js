@@ -6,6 +6,7 @@ class Day extends Component {
         const { isToday, name, temp } = this.props;
         let dayName, day;
 
+        // Set day and dayName strings
         isToday ? dayName = 'Today' : dayName = name;
         isToday ? day = 'today' : day = 'day';
 
